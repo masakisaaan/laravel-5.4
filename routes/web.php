@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/{id?}/{pass?}','indexController@index');
+Route::get('/','indexController@index');
 
 /*
 Route::name('index')

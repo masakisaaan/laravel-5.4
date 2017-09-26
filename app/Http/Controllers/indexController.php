@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class indexController extends Controller
 {
-    public function index($id='noname',$pass='unknown'){
+    public function index(Request $request, Response $response){
 
-        return <<<EOF
-    
+$html = <<<EOF
 <html>
 <head>
 <title>Index</title>
@@ -21,14 +21,15 @@ h1 { font-size:100px; text-align:right; color:#eee;
 </head>
 <body>
     <h1>Index</h1>
-    <p>Hello,Index..</p>
-    <ul>
-        <li>ID: {$id}</li>
-        <li>PASS: {$pass}</li>
-    </ul>
+    <h3>Request</h3>
+    <pre>{$request}</pre>
+    <h3>Response</h3>
+    <pre>{$response}</pre>
 </body>
 </html>
 EOF;
+        $response->setContent($html);
+        return $response;
 
     }
 }
