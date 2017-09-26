@@ -1,19 +1,16 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Index</title>
-    <style>
-        body { font-size:16px; color:#999; }
-        h1 { font-size:100px; text-align:right; color:#eee;
-            margin:-40px 0px -50px 0px; }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title> @yield('title') </title>
+    <link rel="stylesheet" href="/css/common/reset.css" media="all" title="no title">
+    <link rel="stylesheet" href="/css/common/main.css" media="all" title="no title">
+    @yield('css')
 </head>
 <body>
-    <h1>Blade/Index</h1>
-    <p>{{$msg}}</p>
-    <form method="POST" action="/">
-        {{ csrf_field() }}
-        <input type="text" name="msg">
-        <input type="submit">
-    </form>
+
+    <h1>index blade</h1>
+
 </body>
 </html>
