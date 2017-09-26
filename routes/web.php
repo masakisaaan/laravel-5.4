@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/{id?}/{pass?}','indexController@index');
+
+/*
+Route::name('index')
+            ->get('/','indexController@index');
+*/
