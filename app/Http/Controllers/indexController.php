@@ -9,11 +9,7 @@ class indexController extends Controller
 {
     public function index()
     {
-        return view('template.index',['msg'=>'']);
+        return view('template.index');
     }   
     
-    public function post(Request $request)
-    {
-        return view('template.index',['msg'=>$request->msg]);    
-    }
 }
