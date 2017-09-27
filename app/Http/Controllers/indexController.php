@@ -8,9 +8,13 @@ use App\User;
 
 class indexController extends Controller
 {
+    public function __construct()
+    {
+      parent::__construct();
+    }  
+    
     public function index()
     {
-        return view('template.index');
+        return view('welcome');
     }   
-    
 }
