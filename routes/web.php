@@ -11,10 +11,11 @@
 |
 */
 
-Route::get('/','indexController@index');
-Route::post('/','indexController@post');
-
 /*
 Route::name('index')
             ->get('/','indexController@index');
 */
+Auth::routes();
+
+Route::get('/','indexController@index');
+Route::get('/home', 'HomeController@index')->name('home');
