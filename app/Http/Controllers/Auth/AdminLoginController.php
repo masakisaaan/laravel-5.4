@@ -29,7 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = 'admin/';
 
     /**
      * Create a new controller instance.
@@ -66,13 +66,12 @@ class LoginController extends Controller
         $username = $users->name; //氏名
         $email = $users->email; //メールアドレス
         $avatar = $users->avatar; //プロフィール画像URL
+        $gender = $user['gender']; //性別
         $school_name = $organization_list['name']; //学校名
         $course = $organization_list['title'];  //コース・専攻
 
-        /*
         $token = $users->token; //アクセストークン
         $refreshToken = $users->refreshToken; //リフレッシュトークン
-        */
 
     }
 
