@@ -70,9 +70,12 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
-
                 <div class="links">
-                    <a href="./login/google">Login</a>
+                    @if (Auth::guest())
+                        <a href="./login">Login</a>
+                    @else
+                        <p>Hello! Your Logged in!</p>
+                    @endif
                 </div>
             </div>
         </div>
