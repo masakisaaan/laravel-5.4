@@ -72,9 +72,20 @@
                 </div>
                 <div class="links">
                     @if (Auth::guest())
-                        <a href="./login">Login</a>
+                        <a href="./login">ログイン</a>
+                        <a href="./login/google">Googleログイン</a>
+                        <a href="./login/google">新規登録</a>
                     @else
-                        <p>Hello! Your Logged in!</p>
+                        <p>Hello! Your Logged In!</p>
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     @endif
                 </div>
             </div>
