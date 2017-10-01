@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -43,37 +44,63 @@ class LoginController extends Controller
 
     public function getGoogleAuth()
     {
-
-        //return Socialite::driver('google')->redirect();
-
         $scopes = [
             'https://www.googleapis.com/auth/plus.me',
             'https://www.googleapis.com/auth/plus.profile.emails.read'
         ];
 
-        return Socialite::driver('google')->scopes($scopes)->redirect();
+        $parameters = [
+            'approval_prompt' => 'force',
+            'access_type' => 'offline'
+        ];
+
+        return Socialite::driver('google')->scopes($scopes)->with($parameters)->redirect();
 
     }
 
     public function getGoogleAuthCallback()
     {
-        $users = Socialite::driver('google')->user();
-        $user = $users->user;
+        $user = Socialite::driver('google')->user();
 
-        $organization = $user['organizations'];
-        $organization_list = $organization[0];
+        $email = $user->email;
+        $expiresIn = $user->expiresIn; //有効期限
+        $access_token = $user->token;
+        $refresh_token = $user->refreshToken;
 
-        $username = $users->name; //氏名
-        $email = $users->email; //メールアドレス
-        $avatar = $users->avatar; //プロフィール画像URL
-        $school_name = $organization_list['name']; //学校名
-        $course = $organization_list['title'];  //コース・専攻
+        $result = explode("@", $email);
 
-        /*
-        $token = $users->token; //アクセストークン
-        $refreshToken = $users->refreshToken; //リフレッシュトークン
-        */
+        //メールアドレスのドメインがoic.jpであるか確認
+        if ($result[1] == 'oic.jp') {
+        } else {
+            echo 'oicメールアドレスを使用してください。';
+        }
 
+        //取得したemailから各種情報取得
+        $userdata = DB::table('users')->where('email', $email)->first();
+        $getid = $userdata->id;
+        $gettoken = $userdata->access_token;
+
+        $count = count($userdata);
+
+        //emailとtokenの重複チェック
+        if ($count != 1) {
+            //取得したデータをusersテーブルに挿入し、追加の情報入力画面に遷移する。
+            DB::table('users')->insert([
+                'email' => $email,
+                'access_token' => $access_token,
+                'refresh_token' => $refresh_token
+            ]);
+            //処理
+            //重複して入る場合(既に登録されて入る場合はtokenが取得したものと同じか確認)
+        }elseif($access_token == $gettoken ) {
+            //一致した場合
+            //ログイン処理
+            return redirect('/');
+        }else{
+            //一致しない場合、トークンを上書きする。
+            DB::table('users')->where('access_token',$gettoken)->update(['access_token' => $access_token]);
+            //
+            return redirect('/');
+        }
     }
-
 }
