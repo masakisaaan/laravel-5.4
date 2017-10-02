@@ -93,6 +93,7 @@ class LoginController extends Controller
         }else {
             $getToken = $datalist->access_token;
             if ($access_token == $getToken) {
+                Auth::loginUsingId($user_id);
                 return redirect('/');
             } else {
                 DB::table('users')->where('access_token', $getToken)->update(['access_token' => $access_token]);
