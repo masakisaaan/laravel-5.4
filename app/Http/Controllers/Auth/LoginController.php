@@ -50,8 +50,8 @@ class LoginController extends Controller
         ];
 
         $parameters = [
-            'approval_prompt' => 'force',
-            'access_type' => 'offline'
+            'approval_prompt' => 'auto', //認可されている状態であれば確認画面スキップ
+            'access_type' => 'offline'   //リフレッシュトークンの発行
         ];
 
         return Socialite::driver('google')->scopes($scopes)->with($parameters)->redirect();
@@ -64,7 +64,6 @@ class LoginController extends Controller
 
         $email = $user->email;
         $name = $user->name;
-        $expiresIn = $user->expiresIn; //有効期限
         $access_token = $user->token;
         $refresh_token = $user->refreshToken;
 
@@ -78,6 +77,8 @@ class LoginController extends Controller
 
         //取得したemailから各種情報取得
         $userdata = DB::table('users')->where('email',$email)->get();
+        $datalist = $userdata[0];
+        $user_id = $userdata[0]->id;
         $count = count($userdata);
 
         //emailとtokenの重複チェック
@@ -88,14 +89,14 @@ class LoginController extends Controller
                 'access_token' => $access_token,
                 'refresh_token' => $refresh_token
             ]);
-            //registerへ移動？
             return view('auth.register',compact('email','name'));
         }else {
-            $gettoken = $userdata->access_token;
-            if ($access_token == $gettoken) {
+            $getToken = $datalist->access_token;
+            if ($access_token == $getToken) {
                 return redirect('/');
             } else {
-                DB::table('users')->where('access_token', $gettoken)->update(['access_token' => $access_token]);
+                DB::table('users')->where('access_token', $getToken)->update(['access_token' => $access_token]);
+                Auth::loginUsingId($user_id);
                 return redirect('/');
             }
         }

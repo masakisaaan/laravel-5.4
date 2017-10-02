@@ -72,9 +72,8 @@
                 </div>
                 <div class="links">
                     @if (Auth::guest())
-                        <a href="./login">ログイン</a>
-                        <a href="./login/google">Googleログイン</a>
-                        <a href="./login/google">新規登録</a>
+                        <a href="./login/google">ログイン</a>
+                        <a href="./login/google">新規登録(google認証ページへ行きます)</a>
                     @else
                         <p>Hello! Your Logged In!</p>
                         <a href="{{ route('logout') }}"
