@@ -63,6 +63,7 @@ class LoginController extends Controller
         $user = Socialite::driver('google')->user();
 
         $email = $user->email;
+        $name = $user->name;
         $expiresIn = $user->expiresIn; //有効期限
         $access_token = $user->token;
         $refresh_token = $user->refreshToken;
@@ -88,7 +89,7 @@ class LoginController extends Controller
                 'refresh_token' => $refresh_token
             ]);
             //registerへ移動？
-            return redirect('/');
+            return view('auth.register',compact('email','name'));
         }else {
             $gettoken = $userdata->access_token;
             if ($access_token == $gettoken) {
